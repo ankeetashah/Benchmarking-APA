@@ -66,20 +66,20 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                             composition += 1
                         check = 0.8
 
-        else:
+            else:
                 if len(sequence) <= 40:
                     for k in range(20, len(sequence)):
                             count += 1
-                            if sequence[k] == 'A':
+                            if sequence[k] == base:
                                     composition += 1
                 else:
                     for k in range(20, 40):
                         count += 1
-                        if sequence[k] == 'A':
+                        if sequence[k] == base:
                             composition += 1
                 for k in range(0, 20):
                     count += 1
-                    if sequence[k] == 'A':
+                    if sequence[k] == base:
                         composition += 1
                     check = 0.8
         if len(sequence) > 0 and len(sequence) < 20:
@@ -161,12 +161,12 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                     if len(GENOMIC) >  len(GENOMIC)-use+10:
                         for m in range(len(GENOMIC)-use, len(GENOMIC)-use+10):
                             mispriming_count += 1
-                            if GENOMIC[m] == 'A':
+                            if GENOMIC[m] == base:
                                 mispriming_quant += 1
                     else:
                         for m in range(len(GENOMIC)-use, len(GENOMIC)):
                             mispriming_count += 1                                      
-                            if GENOMIC[m] == 'A':
+                            if GENOMIC[m] == base:
                                 mispriming_quant += 1
             if mispriming_count != 0:
                 mispriming_quant = mispriming_quant/mispriming_count
@@ -176,12 +176,12 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                     if len(GENOMIC)-use-10 >= 0:
                         for m in range(len(GENOMIC)-use-10, len(GENOMIC)-use):
                             mispriming_count += 1
-                            if GENOMIC[m] == 'A':
+                            if GENOMIC[m] == base:
                                 mispriming_quant += 1
                     else:
                         for m in range(0, len(GENOMIC)-use):
                             mispriming_count += 1
-                            if GENOMIC[m] == 'A':
+                            if GENOMIC[m] == base:
                                 mispriming_quant += 1
                     if mispriming_count != 0:
                         mispriming_quant = mispriming_quant/mispriming_count
