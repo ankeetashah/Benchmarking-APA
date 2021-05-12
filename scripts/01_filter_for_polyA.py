@@ -105,7 +105,7 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                     #with open(sys.argv[6], 'a') as soft: #metadata for read  -- all reads that have POLYA
                         #soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
             GENOMIC = ""
-            if int(softclipped[j]) < 10:
+            if int(softclipped) < 10:
                 se = 10
             else:
                 use = int(softclipped)
