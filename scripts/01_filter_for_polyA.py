@@ -16,7 +16,7 @@ def main(options):
     for read in samfile.fetch():
         softclipped = read_samfile(read)
         print softclipped
-        composition(samfile, softclipped, options.output, polyA, nopolyA, MP, noMP)
+        composition(read, softclipped, options.output, polyA, nopolyA, MP, noMP)
 
 def read_samfile(read):
     softclipped = []
@@ -195,8 +195,7 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                         MP.write(read)
 
 
-def composition(samfile, softclipped, filename, polyA, nopolyA, MP, noMP):
-    for read in samfile.fetch():
+def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP):
         compositions = []
         composition = 0
         length = read.query_length
