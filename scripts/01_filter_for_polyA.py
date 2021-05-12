@@ -201,9 +201,9 @@ def composition(samfile, softclipped, filename):
         if  length > 0:
             for j in range(0, len(softclipped)):
                 if j == 0 and softclipped[j] != 'NA': #reverse strand
-                    polyA_noMP(softclipped, read, "forward", filename)
+                    polyA_noMP(softclipped[j], read, "forward", filename)
                 if j == 1 and softclipped[j] != 'NA':
-                    polyA_noMP(softclipped, read, "reverse", filename)
+                    polyA_noMP(softclipped[j], read, "reverse", filename)
 
 
 if __name__ == "__main__":
