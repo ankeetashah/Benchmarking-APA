@@ -16,7 +16,7 @@ def main(options):
     softclipped = read_samfile(samfile)
     composition = composition(samfile, softclipped, options.output)
 
-def read_samfile_softclipped(samfile):
+def read_samfile(samfile):
     for read in samfile.fetch():
         softclipped = []
         for i in range(0, len(read.cigartuples)):
