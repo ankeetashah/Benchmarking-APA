@@ -1,4 +1,4 @@
-# Polyadenylation site identification using Iso-Seq data
+# Polyadenylation site identification using PacBio Iso-Seq data
 
 Code associated with "Benchmarking sequencing methods and tools that facilitate the study of alternative polyadenylation"
 
