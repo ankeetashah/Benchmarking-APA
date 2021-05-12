@@ -1,8 +1,10 @@
 
 def main(options):
 
-    annotate(options.reference, options.input)
-    define_PAS(options.input)
+    if options.annotate != 0:
+        annotate(options.reference, options.input)
+    if options.usage != 0:
+        usage(options.input)
 
 def annotate(reference, filename):  
     genes = {}
@@ -52,7 +54,7 @@ def annotate(reference, filename):
 def usage(filename):
     genes = {}
 
-    with open(filename + ".FINAL.bed", 'r') as f:
+    with open(filename + ".FINAL.UNIQ.bed", 'r') as f:
         for line in f:
             line = line.rstrip()
             chrom, s, e, name, score, strand = line.split("\t")
@@ -63,7 +65,7 @@ def usage(filename):
             else:
                 genes[gene] += score
 
-    with open(filename + ".FINAL.bed", 'r') as f:
+    with open(filename + ".FINAL.UNIQ.bed", 'r') as f:
             for line in f:
                     line = line.rstrip()
                     chrom, s, e, name, score, strand = line.split("\t")
@@ -86,6 +88,11 @@ if __name__ == "__main__":
     parser.add_option("-r", "--reference", dest="ref",
         help="reference annotations (e.g. Refseq2Gene.txt)")
 
+    parser.add_option("-a", "--annotate", dest="annotate",
+        help="fixing annotations mode")
+
+    parser.add_option("-u", "--usage", dest="usage",
+        help="calculating PAUs mode")
 
     (options, args) = parser.parse_args()
     

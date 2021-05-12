@@ -1,14 +1,3 @@
-'''
-USAGE: python remove_sc.py  ../data/merged.sort.bam  ../data/merged.sort.polyA.bam ../data/merged.meta.txt
-python /project2/yangili1/ankeetashah/APA_tools/pacbio_2/code/filter_for_poly_longerpolyA_MP.py all.sort.bam all.polyA.bam all.nopolyA.bam all.MP.bam all.noMP.bam all.polyA.meta.txt all.nopolyA.meta.txt all.noMP.meta.txt all.MP.meta.txt
-python X -ib
-'''
-
-import subprocess
-import sys
-import pysam
-from pyfaidx import Faidx
-
 def main(options):
 
     samfile = pysam.AlignmentFile(options.input, "rb")
@@ -43,7 +32,7 @@ def read_samfile_softclipped(samfile):
                             softclipped.append('NA')
     return(softclipped)
 
-def polyA_MP(softclipped, read, strand):
+def polyA_noMP(softclipped, read, strand, filename):
     base = "A"
     up_down = "upstream"
     if strand == "reverse":
@@ -160,7 +149,7 @@ def polyA_MP(softclipped, read, strand):
                                         mispriming_quant = mispriming_quant/mispriming_count
                         if mispriming_quant < 0.6: #means no mispriming upstream 
                             noMP.write(read)
-                            with open(filename + ".bed", 'a') as soft:
+                            with open(filename + ".noMP.meta.txt", 'a') as soft:
                                 soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
                         else:
                             MP.write(read)
@@ -212,12 +201,18 @@ def composition(samfile, softclipped, filename):
         if  length > 0:
             for j in range(0, len(softclipped)):
                 if j == 0 and softclipped[j] != 'NA': #reverse strand
-                    polyA_MP(softclipped, read, "forward", filename)
+                    polyA_noMP(softclipped, read, "forward", filename)
                 if j == 1 and softclipped[j] != 'NA':
-                    polyA_MP(softclipped, read, "reverse", filename)
+                    polyA_noMP(softclipped, read, "reverse", filename)
 
 
 if __name__ == "__main__":
+	import subprocess
+	import sys
+	import pysam
+	from pyfaidx import Faidx
+
+
     from optparse import OptionParser
 
     parser = OptionParser()
