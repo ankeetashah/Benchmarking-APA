@@ -16,7 +16,7 @@ def main(options):
     for read in samfile.fetch():
         softclipped = read_samfile(read)
         print softclipped
-        composition(read, softclipped, options.output, polyA, nopolyA, MP, noMP)
+        composition(read, softclipped, options.output, polyA, nopolyA, MP, noMP, fa)
 
 def read_samfile(read):
     softclipped = []
@@ -33,7 +33,7 @@ def read_samfile(read):
                 softclipped.append('NA')
     return(softclipped)
 
-def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP):
+def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP, fa):
     base = "A"
     up_down = "upstream"
     if strand == "reverse":
@@ -195,7 +195,7 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                         MP.write(read)
 
 
-def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP):
+def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP, fa):
         compositions = []
         composition = 0
         length = read.query_length
@@ -203,9 +203,9 @@ def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP):
             for j in range(0, len(softclipped)):
                 if j == 0 and softclipped[j] != 'NA': #reverse strand
                     print softclipped[j]
-                    polyA_noMP(softclipped[j], read, "forward", filename,length, polyA, nopolyA, MP, noMP)
+                    polyA_noMP(softclipped[j], read, "forward", filename,length, polyA, nopolyA, MP, noMP, fa)
                 if j == 1 and softclipped[j] != 'NA':
-                    polyA_noMP(softclipped[j], read, "reverse", filename, length, polyA, nopolyA, MP, noMP)
+                    polyA_noMP(softclipped[j], read, "reverse", filename, length, polyA, nopolyA, MP, noMP, fa)
 
 
 if __name__ == "__main__":
