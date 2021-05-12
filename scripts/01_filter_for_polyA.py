@@ -215,7 +215,7 @@ if __name__ == "__main__":
 
     parser = OptionParser()
     
-    parser.add_option("-ib", "--inputbam", dest="input",
+    parser.add_option("-i", "--inputbam", dest="input",
         help="aligned Iso-Seq reads (pooled if worked with multiple libraries)")
     
     parser.add_option("-o", "--outprefix", dest="outprefix", default = 'test',
