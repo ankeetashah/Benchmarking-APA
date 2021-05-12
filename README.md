@@ -115,10 +115,8 @@ samtools index total.merge.sort.bam
 
 ## Step 6: Define PolyA Reads 
 
-For the purpose of this tutorial, we have included a subsampled alignment file ```chr22.bam``` in the [data](https://github.com/ankeetashah/Benchmarking-APA/tree/main/data) directory. 
-
 ```
-python scripts/01_filter_for_poly.py -ib data/chr22.bam -o test -f ref/hg19.fa 
+python scripts/01_filter_for_poly.py -ib total.merge.sort.bam -o test -f ref/hg19.fa 
 ```
 
 ## Step 7: Define PAS Sites
