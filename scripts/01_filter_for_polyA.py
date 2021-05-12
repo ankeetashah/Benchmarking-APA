@@ -26,11 +26,11 @@ def read_samfile(read):
                 softclipped.append(int(read.cigartuples[i][1]))
             else:
                 softclipped.append('NA')
-                if i == len(read.cigartuples)-1:
-                    if int(read.cigartuples[i][0]) == 4:
-                        softclipped.append(int(read.cigartuples[i][1]))
-                    else:
-                        softclipped.append('NA')
+        if i == len(read.cigartuples)-1:
+            if int(read.cigartuples[i][0]) == 4:
+                softclipped.append(int(read.cigartuples[i][1]))
+            else:
+                softclipped.append('NA')
     return(softclipped)
 
 def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP):
