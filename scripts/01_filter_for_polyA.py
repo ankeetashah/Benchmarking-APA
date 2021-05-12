@@ -14,7 +14,7 @@ def main(options):
         fa = Faidx(options.fasta)
 
     softclipped = read_samfile(samfile)
-    composition(samfile, softclipped, options.output)
+    composition(samfile, softclipped, options.output, polyA, nopolyA, MP, noMP)
 
 def read_samfile(samfile):
     for read in samfile.fetch():
@@ -32,7 +32,7 @@ def read_samfile(samfile):
                             softclipped.append('NA')
     return(softclipped)
 
-def polyA_noMP(softclipped, read, strand, filename, length):
+def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP):
     base = "A"
     up_down = "upstream"
     if strand == "reverse":
@@ -194,7 +194,7 @@ def polyA_noMP(softclipped, read, strand, filename, length):
                         MP.write(read)
 
 
-def composition(samfile, softclipped, filename):
+def composition(samfile, softclipped, filename, polyA, nopolyA, MP, noMP):
     for read in samfile.fetch():
         compositions = []
         composition = 0
