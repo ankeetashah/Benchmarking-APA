@@ -106,7 +106,7 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                         #soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
             GENOMIC = ""
             if int(softclipped) < 10:
-                se = 10
+                use = 10
             else:
                 use = int(softclipped)
             CHROM = read.reference_name
