@@ -14,7 +14,7 @@ def main(options):
         fa = Faidx(options.fasta)
 
     softclipped = read_samfile(samfile)
-    composition = composition(samfile, softclipped, options.output)
+    composition(samfile, softclipped, options.output)
 
 def read_samfile(samfile):
     for read in samfile.fetch():
