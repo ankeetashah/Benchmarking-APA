@@ -1,10 +1,10 @@
 def main(options):
 
     samfile = pysam.AlignmentFile(options.input, "rb")
-    polyA = pysam.AlignmentFile(options.ouput + ".polyA.bam", "wb", template=samfile)
+    polyA = pysam.AlignmentFile(options.output + ".polyA.bam", "wb", template=samfile)
     nopolyA = pysam.AlignmentFile(options.output + ".nopolyA.bam", "wb", template=samfile)
     MP = pysam.AlignmentFile(options.output + ".MP.bam", "wb", template=samfile)
-    noMP = pysam.AlignmentFile(options.ouput + ".noMP.bam", "wb", template=samfile)
+    noMP = pysam.AlignmentFile(options.output + ".noMP.bam", "wb", template=samfile)
     
     if options.fasta == None:
         fa = Faidx('../ref/hg19.fa')
