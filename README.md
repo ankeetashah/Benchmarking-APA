@@ -116,7 +116,7 @@ samtools index total.merge.sort.bam
 ## Step 6: Define PolyA Reads 
 
 ```
-python scripts/01_filter_for_polyA.py -ib total.merge.sort.bam -o test -f ref/hg19.fa 
+python scripts/01_filter_for_polyA.py -i total.merge.sort.bam -o test -f ref/hg19.fa 
 ```
 
 ## Step 7: Define PAS Sites
