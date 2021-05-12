@@ -23,13 +23,15 @@ conda install -c bioconda pyfaidx
 conda install -c bioconda minimap2
 ```
 
-The apprpriate output bed files (specifically for 3'UTR and exon annotations) are in the (ref/)(https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref). The following command was used. If one wishes to work with a different reference genome, this step can be re-run accordingly.
+The appropriate output bed files (specifically for 3'UTR and exon annotations) are in the (ref/)(https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref). The following command was used. If one wishes to work with a different reference genome, this step can be re-run accordingly.
 
 ```bash
 python external_scripts/extract_transcript_regions.py  -i ref/hg19.refGene.gtf.gz -o ref/hg19 --gtf
 ```
 
 ## Step 1: Generate CCS 
+
+Iso-Seq libraries generated for this study will be on GEO (Accession Number TBD).
 
 For each SMRT cell you will have a ```X.subreads.bam file```, such as ```m54304_190611_190806.subreads.bam```.
 
@@ -107,12 +109,16 @@ Once you have repeated this step for all samples, merge the bams together:
 
 ```
 samtools merge total.merge.bam demux.5p--YG_GM2_3p.sort.bam demux.5p--YG_GM4_3p.sort.bam demux.5p--YG_GM6_3p.sort.bam demux.5p--YG_GM8_3p.sort.bam demux.5p--YG_GM10_3p.sort.bam
+samtools sort total.merge.bam total.merge.sort.bam
+samtools index total.merge.sort.bam
 ```
 
 ## Step 6: Define PolyA Reads 
 
+For the purpose of this tutorial, we have included a subsampled alignment file ```chr22.bam``` in the [data](https://github.com/ankeetashah/Benchmarking-APA/tree/main/data) directory. 
+
 ```
-python scripts/01_filter_for_poly.py -ib total.merge.bam -o test -f ref/hg19.fa 
+python scripts/01_filter_for_poly.py -ib data/chr22.bam -o test -f ref/hg19.fa 
 ```
 
 ## Step 7: Define PAS Sites
