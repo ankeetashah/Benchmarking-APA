@@ -1,5 +1,7 @@
 # Polyadenylation site identification using Iso-Seq data
 
+Code associated with "Benchmarking sequencing methods and tools that facilitate the study of alternative polyadenylation"
+
 ## Step 0: Preparation
 
 - Download [hg19.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz) annotations. Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```mv hg19.refGene.gtf.gz ref/.```)
@@ -107,13 +109,13 @@ Once you have repeated this step for all samples, merge the bams together:
 samtools merge total.merge.bam demux.5p--YG_GM2_3p.sort.bam demux.5p--YG_GM4_3p.sort.bam demux.5p--YG_GM6_3p.sort.bam demux.5p--YG_GM8_3p.sort.bam demux.5p--YG_GM10_3p.sort.bam
 ```
 
-## Step 6: Define polyA reads 
+## Step 6: Define PolyA Reads 
 
 ```
 python scripts/01_filter_for_poly.py -ib total.merge.bam -o test -f ref/hg19.fa 
 ```
 
-## Step 7: Define PAS sites
+## Step 7: Define PAS Sites
 
 First, truncate the 3'UTR and exon annotation files to be in comprised of 6 columns.
 ```
@@ -131,7 +133,7 @@ python scripts/02_noMP_exon_UTR.py -i test.noMP.meta.txt -p test
 
 ## Step 8: Annotate
 
-Prepare input files for annotation
+Prepare input files for annotation.
 ```
 sort -k1,1 -k2,2n test.noMP.restricted.peaks.bed > test.noMP.restricted.peaks.sort.bed
 bedtools merge -i test.noMP.restricted.peaks.sort.bed -c 4,5,6 -o collapse,mean,distinct > test.noMP.restricted3.peaks.sort.refined.bed
