@@ -32,7 +32,7 @@ def read_samfile(samfile):
                             softclipped.append('NA')
     return(softclipped)
 
-def polyA_noMP(softclipped, read, strand, filename):
+def polyA_noMP(softclipped, read, strand, filename, length):
     base = "A"
     up_down = "upstream"
     if strand == "reverse":
@@ -201,9 +201,9 @@ def composition(samfile, softclipped, filename):
         if  length > 0:
             for j in range(0, len(softclipped)):
                 if j == 0 and softclipped[j] != 'NA': #reverse strand
-                    polyA_noMP(softclipped[j], read, "forward", filename)
+                    polyA_noMP(softclipped[j], read, "forward", filename,length)
                 if j == 1 and softclipped[j] != 'NA':
-                    polyA_noMP(softclipped[j], read, "reverse", filename)
+                    polyA_noMP(softclipped[j], read, "reverse", filename, length)
 
 
 if __name__ == "__main__":
