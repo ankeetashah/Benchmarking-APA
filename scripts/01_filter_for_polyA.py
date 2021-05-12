@@ -218,7 +218,7 @@ if __name__ == "__main__":
     parser.add_option("-i", "--inputbam", dest="input",
         help="aligned Iso-Seq reads (pooled if worked with multiple libraries)")
     
-    parser.add_option("-o", "--outprefix", dest="outprefix", default = 'test',
+    parser.add_option("-o", "--outprefix", dest="output", default = 'test',
         help="output prefix (default test)")
 
     parser.add_option("-f", "--fasta", dest="fasta", default = '../ref/hg19.fa',
