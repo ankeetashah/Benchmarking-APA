@@ -42,7 +42,7 @@ def polyA_noMP(softclipped, read, strand, filename):
     sequence = ""
     for i in range(0, softclipped):
         sequence += read.query_sequence[i]
-    if softclipped[j] < (length -softclipped):
+    if softclipped < (length -softclipped):
         quantify = 0
         composition = 0
         count = 0
@@ -89,7 +89,7 @@ def polyA_noMP(softclipped, read, strand, filename):
             check = 0.90
         else:
             return
-        if softclipped[j] !=0:
+        if softclipped !=0:
             quantify = float(composition)/float(count)
         else:
             quantify = 0
