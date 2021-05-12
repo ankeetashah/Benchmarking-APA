@@ -207,12 +207,10 @@ def composition(samfile, softclipped, filename):
 
 
 if __name__ == "__main__":
-	import subprocess
-	import sys
-	import pysam
-	from pyfaidx import Faidx
-
-
+    import subprocess
+    import sys
+    import pysam
+    from pyfaidx import Faidx
     from optparse import OptionParser
 
     parser = OptionParser()
