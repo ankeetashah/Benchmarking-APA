@@ -16,7 +16,7 @@ def annotate(reference, filename):
                 genes[ID] = (name, strand)
 
 
-    with open(filename, 'r') as f:
+    with open(filename + ".homer.annotate.BED", 'r') as f:
         next(f)
         for line in f:
             line = line.rstrip()
