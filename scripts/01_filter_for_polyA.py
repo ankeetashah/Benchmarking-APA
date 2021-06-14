@@ -33,14 +33,10 @@ def read_samfile(read):
                 softclipped.append('NA')
     return(softclipped)
 
-def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP, fa):
-    base = "A"
+def rev_polyA_noMP(softclipped, read, up_down, filename, length, polyA, nopolyA, MP, noMP, fa):
     up_down = "upstream"
-    if strand == "reverse":
-        base = "T"
-        up_down = "downstream"
-
-    sequence = ""
+	base = "T"
+    sequence = "" #from here we know we are rev strand -> meaning base = T
     for i in range(0, softclipped):
         sequence += read.query_sequence[i]
     if softclipped < (length -softclipped):
@@ -49,24 +45,102 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
         count = 0
         check = 0
         if len(sequence) >= 20:
-            if base == "T":
-                for k in range(len(sequence)-20, len(sequence)):
+            for k in range(len(sequence)-20, len(sequence)):
+                count += 1
+                if sequence[k] == base:
+                    composition += 1
+            if len(sequence) <= 40:
+                for k in range(0, len(sequence)-20):
+                    count += 1
+                    if sequence[k] == base:
+                            composition += 1
+            else:
+                for k in range(len(sequence)-40, len(sequence)-20):
                     count += 1
                     if sequence[k] == base:
                         composition += 1
-                if len(sequence) <= 40:
-                    for k in range(0, len(sequence)-20):
-                        count += 1
-                        if sequence[k] == base:
-                                composition += 1
-                else:
-                    for k in range(len(sequence)-40, len(sequence)-20):
-                        count += 1
-                        if sequence[k] == base:
-                            composition += 1
-                        check = 0.8
-
+            check = 0.8
+        elif len(sequence) > 0 and len(sequence) < 20:
+            for k in range(0, len(sequence)):
+                count += 1
+                if sequence[k] == base:
+                    composition += 1
+            check = 0.90
+        else:
+            return
+        if softclipped !=0:
+            quantify = float(composition)/float(count)
+        else:
+            quantify = 0
+        if quantify < check:
+            if up_down not in read.query_name:
+                read.query_name = read.query_name + "." + up_down
+            nopolyA.write(read) #this is a non-polyA read  
+        else:
+            if up_down not in read.query_name:
+                read.query_name = read.query_name + "." + up_down
+            polyA.write(read)
+            GENOMIC = ""
+            if int(softclipped) < 10:
+                use = 10
             else:
+                use = int(softclipped)
+            CHROM = read.reference_name
+            if int(read.reference_start) - use > 1:
+                START = int(read.reference_start) - use
+            else:
+                return
+            END = int(read.reference_end)-1
+            GENOMIC = str(fa.fetch(CHROM, START, END)).upper()
+            mispriming_count = 0.0
+            mispriming_quant = 0.0
+            if END-START > use+10:
+            	for m in range(use, use+10):
+            		mispriming_count += 1
+            		if GENOMIC[m] == base:
+            			mispriming_quant += 1
+            else:
+            	for m in range(use, (END-START)):
+            		mispriming_count += 1
+            		if GENOMIC[m] == base:
+            			mispriming_quant += 1
+            if mispriming_count != 0:
+            	mispriming_quant = mispriming_quant/mispriming_count
+            if mispriming_quant < 0.6:
+            	mispriming_count = 0.0
+            	mispriming_quant = 0.0
+            	if use-10 >= 0:
+            		for m in range(use-10, use):
+            			mispriming_count += 1
+            			if GENOMIC[m] == base:
+            				mispriming_quant += 1
+            	else:
+            		for m in range(0, use):
+            			mispriming_count += 1
+            			if GENOMIC[m] == base:
+            				mispriming_quant += 1
+            	if mispriming_count != 0:
+            		mispriming_quant = mispriming_quant/mispriming_count
+            	if mispriming_quant < 0.6:
+            		noMP.write(read)
+            	else:
+            		MP.write(read)
+            else:
+            	MP.write(read)
+ 
+                         
+def fwd_polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP, fa):
+    up_down = "downstream":
+    base = "A"
+    sequence = ""
+    for i in range(length-softclipped, length):
+    	sequence += read.query_sequence[i]
+    if len(sequence) < (length - len(sequence)):
+    	quantify = 0
+    	composition = 0
+    	count = 0
+    	check = 0
+    	if len(sequence) >= 20:
                 if len(sequence) <= 40:
                     for k in range(20, len(sequence)):
                             count += 1
@@ -82,7 +156,7 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                     if sequence[k] == base:
                         composition += 1
                     check = 0.8
-        if len(sequence) > 0 and len(sequence) < 20:
+        elif len(sequence) > 0 and len(sequence) < 20:
             for k in range(0, len(sequence)):
                 count += 1
                 if sequence[k] == base:
@@ -102,8 +176,6 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
             if up_down not in read.query_name:
                 read.query_name = read.query_name + "." + up_down
             polyA.write(read)
-                    #with open(sys.argv[6], 'a') as soft: #metadata for read  -- all reads that have POLYA
-                        #soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
             GENOMIC = ""
             if int(softclipped) < 10:
                 use = 10
@@ -111,63 +183,23 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                 use = int(softclipped)
             CHROM = read.reference_name
             if int(read.reference_start) - use > 1:
-                START = int(read.reference_start) - use #because softclipping happens at front end
+                START = int(read.reference_start) 
             else:
                 return
-            END = int(read.reference_end)-1
-            if strand == "forward":
-                END = int(read.reference_end)-1 + use
+            END = int(read.reference_end)-1 + use
             GENOMIC = str(fa.fetch(CHROM, START, END)).upper()
             mispriming_count = 0.0
             mispriming_quant = 0.0
-            if strand == "reverse":
-                if END-START > use+10: #looking downstream 
-                    for m in range(use, use+10):
-                        mispriming_count += 1
-                        if GENOMIC[m] == base:
-                            mispriming_quant += 1
-                else:
-                    for m in range(use, (END-START)):
-                        mispriming_count += 1
-                        if GENOMIC[m] == base:
-                            mispriming_quant += 1
-                if mispriming_count != 0:
-                    mispriming_quant = mispriming_quant/mispriming_count
-                    if mispriming_quant < 0.6: #means no mispriming downstream 
-                        mispriming_count = 0.0
-                        mispriming_quant = 0.0
-                        if use-10 >= 0:
-                            for m in range(use-10, use):
-                                mispriming_count += 1
-                                if GENOMIC[m] == base:
-                                    mispriming_quant += 1
-                        else:
-                            for m in range(0, use):
-                                mispriming_count += 1
-                                if GENOMIC[m] == base:
-                                    mispriming_quant += 1
-                                    if mispriming_count != 0:
-                                        mispriming_quant = mispriming_quant/mispriming_count
-                        if mispriming_quant < 0.6: #means no mispriming upstream 
-                            noMP.write(read)
-                            print "yes"
-                            with open(filename + ".noMP.meta.txt", 'a') as soft:
-                                soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
-                        else:
-                            MP.write(read)
-                    else:
-                        MP.write(read)
+            if len(GENOMIC) >  len(GENOMIC)-use+10:
+            	for m in range(len(GENOMIC)-use, len(GENOMIC)-use+10):
+                    mispriming_count += 1
+                    if GENOMIC[m] == base:
+                       mispriming_quant += 1
             else:
-                    if len(GENOMIC) >  len(GENOMIC)-use+10:
-                        for m in range(len(GENOMIC)-use, len(GENOMIC)-use+10):
-                            mispriming_count += 1
-                            if GENOMIC[m] == base:
-                                mispriming_quant += 1
-                    else:
-                        for m in range(len(GENOMIC)-use, len(GENOMIC)):
-                            mispriming_count += 1                                      
-                            if GENOMIC[m] == base:
-                                mispriming_quant += 1
+                for m in range(len(GENOMIC)-use, len(GENOMIC)):
+                    mispriming_count += 1
+                    if GENOMIC[m] == base:
+                       mispriming_quant += 1
             if mispriming_count != 0:
                 mispriming_quant = mispriming_quant/mispriming_count
                 if mispriming_quant < 0.6: #means no mispriming downstream 
@@ -187,12 +219,10 @@ def polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, 
                         mispriming_quant = mispriming_quant/mispriming_count
                     if mispriming_quant < 0.6: #means no mispriming upstream 
                         noMP.write(read)
-                        with open(filename + ".bed", 'a') as soft:
-                            soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
                     else:
                         MP.write(read)
                 else:
-                        MP.write(read)
+                    MP.write(read)
 
 
 def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP, fa):
@@ -202,10 +232,9 @@ def composition(read, softclipped, filename, polyA, nopolyA, MP, noMP, fa):
         if  length > 0:
             for j in range(0, len(softclipped)):
                 if j == 0 and softclipped[j] != 'NA': #reverse strand
-                    print softclipped[j]
-                    polyA_noMP(softclipped[j], read, "forward", filename,length, polyA, nopolyA, MP, noMP, fa)
+                    rev_polyA_noMP(softclipped[j], read, "upstream", filename,length, polyA, nopolyA, MP, noMP, fa)
                 if j == 1 and softclipped[j] != 'NA':
-                    polyA_noMP(softclipped[j], read, "reverse", filename, length, polyA, nopolyA, MP, noMP, fa)
+                    fwd_polyA_noMP(softclipped[j], read, "downstream", filename, length, polyA, nopolyA, MP, noMP, fa)
 
 
 if __name__ == "__main__":
