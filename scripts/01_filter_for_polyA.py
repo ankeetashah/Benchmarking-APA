@@ -130,7 +130,7 @@ def rev_polyA_noMP(softclipped, read, up_down, filename, length, polyA, nopolyA,
  
                          
 def fwd_polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, MP, noMP, fa):
-    up_down = "downstream":
+    up_down = "downstream"
     base = "A"
     sequence = ""
     for i in range(length-softclipped, length):
