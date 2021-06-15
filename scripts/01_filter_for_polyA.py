@@ -15,7 +15,6 @@ def main(options):
 
     for read in samfile.fetch():
         softclipped = read_samfile(read)
-        print softclipped
         composition(read, softclipped, options.output, polyA, nopolyA, MP, noMP, fa)
 
 def read_samfile(read):
@@ -35,7 +34,7 @@ def read_samfile(read):
 
 def rev_polyA_noMP(softclipped, read, up_down, filename, length, polyA, nopolyA, MP, noMP, fa):
     up_down = "upstream"
-	base = "T"
+    base = "T"
     sequence = "" #from here we know we are rev strand -> meaning base = T
     for i in range(0, softclipped):
         sequence += read.query_sequence[i]
