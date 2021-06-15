@@ -123,6 +123,8 @@ def rev_polyA_noMP(softclipped, read, up_down, filename, length, polyA, nopolyA,
             		mispriming_quant = mispriming_quant/mispriming_count
             	if mispriming_quant < 0.6:
             		noMP.write(read)
+            		with open(filename + ".noMP.meta.txt", "a") as soft:
+            			soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
             	else:
             		MP.write(read)
             else:
@@ -219,6 +221,8 @@ def fwd_polyA_noMP(softclipped, read, strand, filename, length, polyA, nopolyA, 
                         mispriming_quant = mispriming_quant/mispriming_count
                     if mispriming_quant < 0.6: #means no mispriming upstream 
                         noMP.write(read)
+                        with open(filename + ".noMP.meta.txt", "a") as soft:
+            				soft.write(read.query_name + "\t" + str(len(sequence)) + "\t" + sequence + "\t" + str(length)  + "\n")
                     else:
                         MP.write(read)
                 else:
