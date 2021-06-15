@@ -39,7 +39,7 @@ def score(prefix):
 			else:
 				strand = "+" 
 
-			with open(prefix + "..noMP.restricted.peaks.sort.refined.score.bed", 'a') as output:
+			with open(prefix + ".noMP.restricted.peaks.sort.refined.score.bed", 'a') as output:
 				output.write(chrom + "\t" + s + "\t" + e + "\t" + SRR + "\t" + str(score) + "\t" + strand + "\n") 
 
 
