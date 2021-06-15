@@ -5,7 +5,7 @@ def main(options):
 
 def ensure_exon_overlap(filename):
     UTR_reads = {}
-    with open(filename + ".all.noMP.bed.UTR.EXONS", 'r') as f:
+    with open(filename + ".noMP.bed.UTR.EXONS", 'r') as f:
         for line in f:
             line = line.rstrip()
             NAME = 0  
@@ -13,7 +13,6 @@ def ensure_exon_overlap(filename):
             if (chrom, read_s, read_e, SRR, score, strand) not in UTR_reads:
                 UTR_reads[(chrom, read_s, read_e, SRR, score, strand)] = 0 #indicates not a pass
                 SRR_list = SRR.split(".")
-            #length = len(SRR_list)
                 if "SRR" in SRR: 
                     NAME = 1 
                 if len(SRR_list) == 2:
@@ -32,13 +31,13 @@ def ensure_exon_overlap(filename):
                         if int(read_e) >= int(exon_s):
                             UTR_reads[(chrom, read_s, read_e, SRR, score, strand)] = 1
                             with open(filename + ".noMP.restricted.bed", 'a') as output:
-                                output.write(chrom + "\t" + read_s + "\t" + read_e+ "\t" + SRR+ "\t" + score+ "\t" + strand + "\n") 
+                                output.write(chrom + "\t" + read_s + "\t" + read_e + "\t" + SRR + "\t" + score + "\t" + strand + "\n") 
                 else:
                     if int(read_e) > int(UTR_s):
                         if int(read_s) <= int(exon_e):
                             UTR_reads[(chrom, read_s, read_e, SRR, score, strand)] = 1    
                             with open(filename + ".noMP.restricted.bed", 'a') as output:
-                                output.write(chrom+ "\t" + read_s+ "\t" +read_e+ "\t" +SRR+ "\t" + score+ "\t" + strand + "\n") 
+                                output.write(chrom+ "\t" + read_s + "\t" + read_e + "\t" + SRR + "\t" + score + "\t" + strand + "\n") 
             else:
                 if UTR_reads[(chrom, read_s, read_e, SRR, score, strand)] == 0:
                     SRR_list = SRR.split(".")
@@ -52,7 +51,7 @@ def ensure_exon_overlap(filename):
                             if int(read_e) >= int(exon_s):
                                 UTR_reads[(chrom, read_s, read_e, SRR, score, strand)] = 1
                                 with open(filename + ".noMP.restricted.bed", 'a') as output:
-                                    utput.write(chrom+ "\t" + read_s,+ "\t" + read_e+ "\t" + SRR+ "\t" + score+ "\t" + strand + "\n")
+                                    utput.write(chrom+ "\t" + read_s+ "\t" + read_e+ "\t" + SRR+ "\t" + score+ "\t" + strand + "\n")
                         else:
                             if int(read_e) > int(UTR_s):
                                 if int(read_s) <= int(exon_e):
@@ -102,20 +101,20 @@ def define_PAS(input_, filename):
                         PAS_E = int(e)
                         PAS_S = int(e) - 100
             else:
-                            if len(name.split(".")) == 3:
-                                    if name.split(".")[2] == "upstream":
-                                            PAS_S = int(s)-1
-                                            PAS_E = int(s)-1 + 100
-                                    else:
-                                            PAS_E = int(e)
-                                            PAS_S = int(e) - 100
-                            else: 
-                                    if name.split(".")[3] == "upstream":
-                                            PAS_S = int(s)-1
-                                            PAS_E = int(s)-1 + 100
-                                    else:
-                                            PAS_E = int(e)
-                                            PAS_S = int(e) - 100            
+                if len(name.split(".")) == 3:
+                    if name.split(".")[2] == "upstream":
+                        PAS_S = int(s)-1
+                        PAS_E = int(s)-1 + 100
+                    else:
+                        PAS_E = int(e)
+                        PAS_S = int(e) - 100
+                else: 
+                    if name.split(".")[3] == "upstream":
+                        PAS_S = int(s)-1
+                        PAS_E = int(s)-1 + 100
+                    else:
+                        PAS_E = int(e)
+                        PAS_S = int(e) - 100            
 
             if name in softclipped:
                 ID = name
