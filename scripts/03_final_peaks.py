@@ -11,16 +11,16 @@ def check_strand(prefix):
 			chrom, s, e, name, score, strand = line.split("\t")
 			if "," in strand:
 				former, latter = strand.split(",")
-				with open(prefix + ".noMP.restricted3.peaks.sort.refined.strand.bed", 'a') as output:
+				with open(prefix + ".noMP.restricted.peaks.sort.refined.strand.bed", 'a') as output:
 					output.write(chrom + "\t" + s + "\t" + e + "\t" + name + "\t" + score + "\t" + former + "\n")
 					output.write(chrom + "\t" + s + "\t" + e + "\t" + name + "\t" + score + "\t" + latter + "\n")
 			else:
-				with open(prefix + ".noMP.restricted3.peaks.sort.refined.strand.bed", 'a') as output:
+				with open(prefix + ".noMP.restricted.peaks.sort.refined.strand.bed", 'a') as output:
 					output.write(line + "\n")
 
 
 def score(prefix):
-	with open(prefix + ".noMP.restricted3.peaks.sort.refined.strand.bed", 'r') as f:
+	with open(prefix + ".noMP.restricted.peaks.sort.refined.strand.bed", 'r') as f:
 		for line in f:
 			orientation = ""
 			line = line.rstrip()
