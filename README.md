@@ -146,7 +146,7 @@ One can find hg19 3'UTR and exon RefSeq annotation files under [ref/](https://gi
 ```
 ls  ref/hg19_3utr.bed 
 ls  ref/hg19_exons.bed 
-``
+```
 
 If you are working with a different reference genome, you can regenerate these annotation files by working with the [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables). For example, we selected the following parameters for hg19.
 
