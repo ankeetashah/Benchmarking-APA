@@ -152,7 +152,7 @@ If you are working with a different reference genome, you can regenerate these a
 
 ![plot](table_browser.png)
 
-Subsequently, we selected "3'UTR exons" and "Exons plus" with 0 bases at each end on the subsequent page to generate two separate BED files. 
+Subsequently, we selected "3'UTR exons" to generate the 3'UTR bed file and and "Exons plus" with 0 bases at each end  to generate the exons bed file. 
 
 Remove reads that do not overlap an upstream exon.
 
