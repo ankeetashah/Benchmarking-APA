@@ -150,7 +150,7 @@ ls  ref/hg19_exons.bed
 
 If you are working with a different reference genome, you can regenerate these annotation files by working with the [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables). For example, we selected the following parameters for hg19.
 
-![plot](Screen\ Shot\ 2021-07-13\ at\ 10.04.53\ AM.png)
+![plot](table_browser.png)
 
 Subsequently, we selected "3'UTR exons" and "Exons plus" with 0 bases at each end on the subsequent page to generate two separate BED files. 
 
