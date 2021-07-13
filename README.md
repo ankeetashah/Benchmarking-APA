@@ -124,6 +124,7 @@ samtools sort demux.5p--YG_GM$i\_3p.bam > demux.5p--YG_GM$i\_3p.sort.bam
 samtools index demux.5p--YG_GM$i\_3p.sort.bam
 done
 ```
+## Step 5: Merge 
 
 Once you have repeated this step for all samples, merge the bams together:
 
