@@ -23,7 +23,7 @@ conda install -c bioconda pyfaidx
 conda install -c bioconda minimap2
 ```
 ```bash
-conda activate iso-seq-apa
+conda activate isoseq-apa
 ```
 
 The appropriate output bed files (specifically for 3'UTR and exon annotations) are in the (ref/)(https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref). The following command was used. If one wishes to work with a different reference genome, this step can be re-run accordingly.
