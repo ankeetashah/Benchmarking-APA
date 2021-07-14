@@ -1,10 +1,10 @@
 
 def main(options):
 
-    if options.annotate != 0:
-        annotate(options.reference, options.input)
-    if options.usage != 0:
-        usage(options.input)
+    if options.annotate == "annotate":
+        annotate(options.reference, options.prefix)
+    if options.usage == "usage":
+        usage(options.prefix)
 
 def annotate(reference, filename):  
     genes = {}
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     parser.add_option("-p", "--prefix", dest="prefix", default = 'test',
         help="input and output prefix (default test)")
 
-    parser.add_option("-r", "--reference", dest="ref",
+    parser.add_option("-r", "--reference", dest="reference",
         help="reference annotations (e.g. Refseq2Gene.txt)")
 
     parser.add_option("-a", "--annotate", dest="annotate",
