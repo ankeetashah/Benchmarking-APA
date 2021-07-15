@@ -7,7 +7,8 @@ Code associated with "Benchmarking sequencing methods and tools that facilitate 
 - Download [hg19.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz) annotations. Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```mv hg19.refGene.gtf.gz ref/.```)
 - Download [hg19.fa.gz](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/bigZips/hg19.fa.gz). Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```zcat hg19.fa.gz | mv - ref/.```)
 - Download the [extract_transcript_regions.py](https://github.com/stephenfloor/extract-transcript-regions) script. We have also included it and its dependencies in the the [external_scripts](https://github.com/ankeetashah/Benchmarking-APA/tree/main/external_scripts) directory.
-- Install [Homer](http://homer.ucsd.edu/homer/introduction/install.html). In particular, you will need to be able to run the ```annotatePeaks.pl``` script. 
+- Install [Homer](http://homer.ucsd.edu/homer/introduction/install.html). In particular, you will need to be able to run the ```annotatePeaks.pl``` script. We have a downloaded version of this script in the [external_scripts](https://github.com/ankeetashah/Benchmarking-APA/tree/main/external_scripts) directory.
+
 
 Create a conda environment, and install the following packages:
 ```bash
@@ -200,6 +201,12 @@ chr1    2495208 2495308 NM_003820_TNFRSF14_3' UTR       0.978647686833  +       
 chr1    2495429 2495529 NM_003820_TNFRSF14_3' UTR       0.0142348754448 +       4
 chr1    3650371 3650471 NM_001204186_TP73_3' UTR        0.466666666667  +       7
 ```
+
+We have also included an example for steps 6-8, starting with a merged bam file across all 8 LCLs (restricted to chromosome 22). These steps can be run:
+```
+bash scripts/chr22_test.sh 
+```
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
