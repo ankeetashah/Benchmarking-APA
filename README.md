@@ -5,7 +5,7 @@ Code associated with "Benchmarking sequencing methods and tools that facilitate 
 ## Step 0: Preparation
 
 - Download [hg19.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz) annotations. Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```mv hg19.refGene.gtf.gz ref/.```)
-- Download [hg19.fa.gz](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/bigZips/hg19.fa.gz). Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```mv hg19.fa.gz ref/.```)
+- Download [hg19.fa.gz](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/bigZips/hg19.fa.gz). Move it to the (ref/) (https://github.com/ankeetashah/Benchmarking-APA/tree/main/ref) directory (e.g. ```zcat hg19.fa.gz | mv - ref/.```)
 - Download the [extract_transcript_regions.py](https://github.com/stephenfloor/extract-transcript-regions) script. We have also included it and its dependencies in the the [external_scripts](https://github.com/ankeetashah/Benchmarking-APA/tree/main/external_scripts) directory.
 - Install [Homer](http://homer.ucsd.edu/homer/introduction/install.html). In particular, you will need to be able to run the ```annotatePeaks.pl``` script. 
 
@@ -141,6 +141,7 @@ One can find hg19 3'UTR and exon RefSeq annotation files under [ref/](https://gi
 ```
 ls  ref/hg19_3utr.bed 
 ls  ref/hg19_exons.bed 
+ls  ref/hg19_upstream_exons.bed 
 ```
 
 If you are working with a different reference genome, you can regenerate these annotation files by working with the [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables). For example, we selected the following parameters for hg19.
@@ -149,12 +150,19 @@ If you are working with a different reference genome, you can regenerate these a
 
 Subsequently, we selected "3'UTR exons" to generate the 3'UTR bed file and and "Exons plus" with 0 bases at each end  to generate the exons bed file. 
 
+The exon file will contain the 3'UTRs. You will want to remove these. For example:
+```
+bedtools intersect -b ref/hg19_3utr.bed -a ref/hg19_exons.bed -wa > utr.exon
+python scripts/upstream_exons_only.py ref/hg19_exons.bed utr.exon ref/hg19_upstream_exons.bed 
+```
+
+
 Remove reads that do not overlap an upstream exon.
 
 ```
 bedtools bamtobed -i test.noMP.bam > test.noMP.bed
 bedtools intersect -b ref/hg19_3utr.bed -a test.noMP.bed -s -wa -wb > test.noMP.bed.UTR
-bedtools intersect -b ref/hg19_exons.bed -a test.noMP.bed.UTR -s -wa -wb > test.noMP.bed.UTR.EXONS
+bedtools intersect -b ref/hg19_upstream_exons.bed -a test.noMP.bed.UTR -s -wa -wb > test.noMP.bed.UTR.EXONS
 bedtools intersect -b test.noMP.bed.UTR -a test.noMP.bed -v -wa > test.noMP.bed.INTRON
 python scripts/02_noMP_exon_UTR.py -i test.noMP.meta.txt -p test
 ```
