@@ -79,7 +79,7 @@ tagatatacgtatagGTACTCTGCGTTGATACCACTGCTT
 
 Ouptut files will be named in the following way:
 ```
-cat demux.*.bamm
+cat demux.*.bam
 demux.5p--YG_GM10_3p.bam
 demux.5p--YG_GM2_3p.bam
 demux.5p--YG_GM4_3p.bam
